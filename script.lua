@@ -1,8 +1,8 @@
--- LK7 HUB - VERSÃO FINAL (CORREÇÃO DE MENU E POSIÇÃO)
+-- LK7 HUB - VERSÃO MINIMIZAR (BOTÃO BOLINHA)
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("LK7 FLASH TP ", "DarkTheme")
+local Window = Library.CreateLib("LK7 HUB - IMPÉRIO GG", "DarkTheme")
 
--- Configurações de Busca e Alvo
+-- Configurações
 local targetHeight = 91 
 local itemName = "FLASH TELEPORTE"
 local remoteName = "Teletransporte Instantâneo"
@@ -11,7 +11,7 @@ local remoteName = "Teletransporte Instantâneo"
 local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Flash Steal V2")
 
--- BOTÃO FLASH TP COM TRIGGER AUTOMÁTICO
+-- BOTÃO FLASH TP (SISTEMA COM TRIGGER)
 Section:NewButton("Flash TP (Coord 91)", "Teleporta e usa Trigger no final", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
@@ -20,19 +20,14 @@ Section:NewButton("Flash TP (Coord 91)", "Teleporta e usa Trigger no final", fun
     
     if root and humanoid then
         local targetPos = Vector3.new(root.Position.X, targetHeight, root.Position.Z)
-        
         local tool = player.Backpack:FindFirstChild(itemName) or character:FindFirstChild(itemName)
-        if tool then
-            humanoid:EquipTool(tool)
-            task.wait(0.05)
-        end
+        if tool then humanoid:EquipTool(tool) task.wait(0.05) end
 
         root.CFrame = CFrame.new(targetPos)
 
         task.spawn(function()
             repeat task.wait() until (root.Position.Y >= targetHeight - 1)
             if tool then tool:Activate() end
-            
             for _, v in pairs(game:GetDescendants()) do
                 if v:IsA("RemoteEvent") and (v.Name == remoteName or v.Name == "FlashRemote") then
                     v:FireServer(targetPos)
@@ -43,7 +38,6 @@ Section:NewButton("Flash TP (Coord 91)", "Teleporta e usa Trigger no final", fun
     end
 end)
 
--- BOTÃO X-RAY OTIMIZADO
 Section:NewToggle("Brainrot / X-Ray", "Visão externa", function(state)
     for _, obj in pairs(game.Workspace:GetDescendants()) do
         if obj:IsA("BasePart") and not obj.Parent:FindFirstChild("Humanoid") then
@@ -52,49 +46,82 @@ Section:NewToggle("Brainrot / X-Ray", "Visão externa", function(state)
     end
 end)
 
--- FUNÇÃO PARA DESTRAVAR O MENU E PERMITIR ARRASTAR
-local function MakeDraggable(gui)
-    local UserInputService = game:GetService("UserInputService")
-    local dragging, dragInput, dragStart, startPos
+-- SISTEMA DE MINIMIZAR PARA BOLINHA
+local screenGui = game.CoreGui:FindFirstChild("LK7 HUB - IMPÉRIO GG") or game.Players.LocalPlayer.PlayerGui:FindFirstChild("LK7 HUB - IMPÉRIO GG")
+local mainFrame = screenGui.Main
 
-    gui.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = input.Position
-            startPos = gui.Position
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
+-- Criar o Botão da Bolinha (Escondido no início)
+local OpenButton = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
 
-    gui.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
-        end
-    end)
+OpenButton.Name = "OpenButton"
+OpenButton.Parent = screenGui
+OpenButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+OpenButton.Position = UDim2.new(0.1, 0, 0.1, 0)
+OpenButton.Size = UDim2.new(0, 50, 0, 50)
+OpenButton.Visible = false
+OpenButton.Text = "LK7"
+OpenButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+OpenButton.Font = Enum.Font.SourceSansBold
+OpenButton.TextSize = 18
 
-    UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            local delta = input.Position - dragStart
-            gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        end
-    end)
+UICorner.CornerRadius = UDim.new(1, 0) -- Deixa redondo (Bolinha)
+UICorner.Parent = OpenButton
+
+-- Função para Alternar entre Tela Cheia e Bolinha
+local function ToggleUI()
+    if mainFrame.Visible then
+        mainFrame.Visible = false
+        OpenButton.Visible = true
+    else
+        mainFrame.Visible = true
+        OpenButton.Visible = false
+    end
 end
 
--- APLICA O ARRASTE ASSIM QUE O MENU CARREGAR
+-- Configura o botão da bolinha para abrir
+OpenButton.MouseButton1Click:Connect(ToggleUI)
+
+-- LOCALIZA O BOTÃO "X" DA KAVO E MUDA A FUNÇÃO DELE
 spawn(function()
-    local screenGui = game.CoreGui:WaitForChild("LK7 HUB - IMPÉRIO GG", 15) or game.Players.LocalPlayer.PlayerGui:WaitForChild("LK7 HUB - IMPÉRIO GG", 15)
-    if screenGui then
-        local mainFrame = screenGui:FindFirstChild("Main")
-        if mainFrame then
-            -- Define uma posição inicial para não ficar bem no meio da cara
-            mainFrame.Position = UDim2.new(0.5, -250, 0.5, -150)
-            MakeDraggable(mainFrame)
+    local closeButton = mainFrame:FindFirstChild("Close", true) or mainFrame:FindFirstChild("Exit", true)
+    if closeButton then
+        -- Remove as funções antigas do botão X
+        for _, connection in pairs(getconnections(closeButton.MouseButton1Click)) do
+            connection:Disable()
         end
+        -- Adiciona a nossa função de minimizar
+        closeButton.MouseButton1Click:Connect(ToggleUI)
     end
 end)
 
-Library:Notify("LK7 HUB", "Menu Destravado! Arraste pelo topo.", 5)
+-- ARRASTE DA BOLINHA (Para você mover ela também)
+local UserInputService = game:GetService("UserInputService")
+local dragging, dragInput, dragStart, startPos
+
+OpenButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = OpenButton.Position
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+        local delta = input.Position - dragStart
+        OpenButton.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+OpenButton.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+-- GARANTE QUE O MENU PRINCIPAL SEJA ARRASTÁVEL
+mainFrame.Active = true
+mainFrame.Draggable = true
+
+Library:Notify("LK7 HUB", "Aperte o X para minimizar para a bolinha!", 5)
