@@ -1,25 +1,44 @@
--- LK7 HUB - VERSÃO RECUPERADA (FIX VS CODE)
+-- LK7 HUB - VERSÃO FLASH ITEM + BRAINROT EFFECT
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("LK7 HUB - IMPÉRIO GG", "DarkTheme")
 
--- Variáveis Técnicas
-local targetHeight = 91 -- A altura recomendada para ficar no topo da base
+-- Configurações
+local targetHeight = 91 
 
 -- ABA PRINCIPAL
 local Tab = Window:NewTab("Main")
-local Section = Tab:NewSection("Movimentação & Visual")
+local Section = Tab:NewSection("Flash Steal V2")
 
--- BOTÃO FLASH TP (Coordenada 91)
-Section:NewButton("Flash TP (Coord 91)", "Teleporte para o topo", function()
-    local character = game.Players.LocalPlayer.Character
-    if character and character:FindFirstChild("HumanoidRootPart") then
-        local targetPos = Vector3.new(character.HumanoidRootPart.Position.X, targetHeight, character.HumanoidRootPart.Position.Z)
-        character.HumanoidRootPart.CFrame = CFrame.new(targetPos)
+-- BOTÃO FLASH TP COM ITEM (IGUAL AO VÍDEO)
+Section:NewButton("Flash TP (Item Flash)", "Teleporta usando o item da mochila", function()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    local root = character and character:FindFirstChild("HumanoidRootPart")
+    
+    -- 1. Procura o item Flash TP na mochila ou na mão
+    local flashItem = player.Backpack:FindFirstChild("Flash TP") or character:FindFirstChild("Flash TP")
+    
+    if flashItem and root then
+        -- 2. Equipa o item se não estiver na mão
+        humanoid = character:FindFirstChildOfClass("Humanoid")
+        humanoid:EquipTool(flashItem)
+        
+        -- 3. Define a posição de saída (Altura 91)
+        local targetPos = Vector3.new(root.Position.X, targetHeight, root.Position.Z)
+        
+        -- 4. ATIVA O ITEM (Isso faz o efeito 'Flash' e 'Brainrot' igual ao vídeo)
+        -- Aqui usamos o gatilho do próprio item para o servidor aceitar
+        root.CFrame = CFrame.new(targetPos)
+        flashItem:Activate() 
+        
+    else
+        -- Caso não tenha o item, ele avisa
+        Library:Notify("ERRO", "Você precisa ter o item 'Flash TP' no inventário!", 3)
     end
 end)
 
--- BOTÃO BASE RAY X (Otimizado para não travar)
-Section:NewToggle("Base Ray X", "Ver através das paredes", function(state)
+-- BOTÃO BASE RAY X (Para ver o loot fora da base)
+Section:NewToggle("Brainrot / X-Ray", "Melhora a visão externa", function(state)
     for _, obj in pairs(game.Workspace:GetDescendants()) do
         if obj:IsA("BasePart") and not obj.Parent:FindFirstChild("Humanoid") then
             obj.LocalTransparencyModifier = state and 0.5 or 0
@@ -27,13 +46,13 @@ Section:NewToggle("Base Ray X", "Ver através das paredes", function(state)
     end
 end)
 
--- SOLUÇÃO PARA O PAINEL APARECER E MOVER
+-- SCRIPT PARA MOVER O PAINEL
 spawn(function()
-    local gui = game.CoreGui:WaitForChild("LK7 HUB - IMPÉRIO GG", 10) or game.Players.LocalPlayer.PlayerGui:WaitForChild("LK7 HUB - IMPÉRIO GG", 10)
+    local gui = game.CoreGui:WaitForChild("LK7 HUB - IMPÉRIO GG", 10)
     if gui then
         gui.Main.Active = true
-        gui.Main.Draggable = true -- Ativa o movimento do painel
+        gui.Main.Draggable = true
     end
 end)
 
-Library:Notify("LK7 HUB", "Sistema restaurado com sucesso!", 5)
+Library:Notify("LK7 HUB", "Modo Flash Steal V2 Carregado!", 5)
