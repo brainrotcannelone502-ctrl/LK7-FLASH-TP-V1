@@ -1,6 +1,6 @@
 -- LK7 HUB - VERSÃO FINAL (CORREÇÃO DE MENU E POSIÇÃO)
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("LK7 HUB - IMPÉRIO GG", "DarkTheme")
+local Window = Library.CreateLib("LK7 FLASH TP ", "DarkTheme")
 
 -- Configurações de Busca e Alvo
 local targetHeight = 91 
