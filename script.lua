@@ -1,6 +1,6 @@
 -- LK7 HUB - VERSÃO MINIMIZAR (BOTÃO BOLINHA)
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local Window = Library.CreateLib("LK7 HUB - IMPÉRIO GG", "DarkTheme")
+local Window = Library.CreateLib("LK7 FLASH TP", "DarkTheme")
 
 -- Configurações
 local targetHeight = 91 
