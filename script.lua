@@ -1,17 +1,17 @@
--- LK7 HUB - VERSÃO MINIMIZAR (BOTÃO BOLINHA)
+
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("LK7 FLASH TP", "DarkTheme")
 
--- Configurações
+
 local targetHeight = 91 
 local itemName = "FLASH TELEPORTE"
 local remoteName = "Teletransporte Instantâneo"
 
--- ABA PRINCIPAL
+
 local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Flash Steal V2")
 
--- BOTÃO FLASH TP (SISTEMA COM TRIGGER)
+
 Section:NewButton("Flash TP (Coord 91)", "Teleporta e usa Trigger no final", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
@@ -46,11 +46,11 @@ Section:NewToggle("Brainrot / X-Ray", "Visão externa", function(state)
     end
 end)
 
--- SISTEMA DE MINIMIZAR PARA BOLINHA
+
 local screenGui = game.CoreGui:FindFirstChild("LK7 HUB - IMPÉRIO GG") or game.Players.LocalPlayer.PlayerGui:FindFirstChild("LK7 HUB - IMPÉRIO GG")
 local mainFrame = screenGui.Main
 
--- Criar o Botão da Bolinha (Escondido no início)
+
 local OpenButton = Instance.new("TextButton")
 local UICorner = Instance.new("UICorner")
 
@@ -68,7 +68,7 @@ OpenButton.TextSize = 18
 UICorner.CornerRadius = UDim.new(1, 0) -- Deixa redondo (Bolinha)
 UICorner.Parent = OpenButton
 
--- Função para Alternar entre Tela Cheia e Bolinha
+
 local function ToggleUI()
     if mainFrame.Visible then
         mainFrame.Visible = false
@@ -79,23 +79,22 @@ local function ToggleUI()
     end
 end
 
--- Configura o botão da bolinha para abrir
+
 OpenButton.MouseButton1Click:Connect(ToggleUI)
 
--- LOCALIZA O BOTÃO "X" DA KAVO E MUDA A FUNÇÃO DELE
+
 spawn(function()
     local closeButton = mainFrame:FindFirstChild("Close", true) or mainFrame:FindFirstChild("Exit", true)
     if closeButton then
-        -- Remove as funções antigas do botão X
+       
         for _, connection in pairs(getconnections(closeButton.MouseButton1Click)) do
             connection:Disable()
         end
-        -- Adiciona a nossa função de minimizar
+        
         closeButton.MouseButton1Click:Connect(ToggleUI)
     end
 end)
 
--- ARRASTE DA BOLINHA (Para você mover ela também)
 local UserInputService = game:GetService("UserInputService")
 local dragging, dragInput, dragStart, startPos
 
