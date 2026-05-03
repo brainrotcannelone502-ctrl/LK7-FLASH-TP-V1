@@ -1,12 +1,9 @@
-
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
 local Window = Library.CreateLib("LK7 FLASH TP", "DarkTheme")
-
 
 local targetHeight = 91 
 local itemName = "FLASH TELEPORTE"
 local remoteName = "Teletransporte Instantâneo"
-
 
 local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Flash Steal V2")
