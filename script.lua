@@ -9,7 +9,7 @@ local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Flash Steal V2")
 
 
-Section:NewButton("Flash TP (Coord 91)", "Teleporta e usa Trigger no final", function()
+Section:NewButton("FLASH TP)", "Teleporta e usa Trigger no final", function()
     local player = game.Players.LocalPlayer
     local character = player.Character
     local root = character and character:FindFirstChild("HumanoidRootPart")
@@ -35,7 +35,7 @@ Section:NewButton("Flash TP (Coord 91)", "Teleporta e usa Trigger no final", fun
     end
 end)
 
-Section:NewToggle("Brainrot / X-Ray", "Visão externa", function(state)
+Section:NewToggle("x ray", "Visão externa", function(state)
     for _, obj in pairs(game.Workspace:GetDescendants()) do
         if obj:IsA("BasePart") and not obj.Parent:FindFirstChild("Humanoid") then
             obj.LocalTransparencyModifier = state and 0.5 or 0
