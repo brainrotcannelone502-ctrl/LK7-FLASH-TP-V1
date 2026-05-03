@@ -8,7 +8,7 @@ local toolName = "Teletransporte Instantâneo"
 local Tab = Window:NewTab("Main")
 local Section = Tab:NewSection("Flash Steal V2")
 
-Section:NewButton("FLASH GRAB", "Teleporta para a mira e ativa o item", function()
+Section:NewButton("FLASH TP", "Teleporta para a mira e ativa o item", function()
     local player = game.Players.LocalPlayer
     local mouse = player:GetMouse()
     local character = player.Character
